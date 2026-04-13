@@ -18,26 +18,32 @@ public class App {
          * - listadoficheros.java
          */
 
-        String directorio = "./listarFicheros";
+        String rutaDada = ".";
 
         // System.out.print("Introduce un directorio: ");
 
-        File file = new File(directorio);
-
-        if (file.exists()) {
-            if (file.isDirectory()) {
-                System.out.println("Existe");
-            } else {
-                System.out.println("Error");
-            }
-        } else {
-            System.out.println("Error");
-        }
-
+        recorrerDirectorio(rutaDada);
         
     }
 
-    public static void recorrerDirectorio(File file) {
-        String[] archivos = file.listFiles();
-    }
-}
+    public static void recorrerDirectorio(String ruta) {
+        File fichero = new File(ruta);
+
+        if (fichero.isDirectory() && fichero.exists()) {
+            File[] archivos = fichero.listFiles();
+
+            for (File archivo : archivos) {
+                if (archivo.isDirectory()) {
+                    System.out.println("+ " + archivo.getName().toUpperCase());
+                    recorrerDirectorio(archivo.getPath());
+                } else {
+                    System.out.println("\t - " + archivo.getName().toLowerCase());
+                }
+            }
+            
+        } else {
+            System.out.println("Error, inválido");
+        }
+
+        
+    }}
