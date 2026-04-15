@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.PrintWriter;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -10,37 +10,31 @@ public class App {
          * Desarrolla un programa que lea un archivo de texto largo y lo divida en
          * archivos con un máximo de 20 líneas cada uno.
          */
+        int contador = 1;
+        int numFichero = 1;
+        String linea;
 
-        
-        try (FileReader fr = new FileReader("src/archivo.txt");
-            BufferedReader br = new BufferedReader(fr)) {
-            String linea = br.readLine();
+        try (BufferedReader lector = new BufferedReader(new FileReader(new File("src/archivo.txt")))) {
 
-            int contador = 0;
-            int numFichero = 1;
-            BufferedWriter bw = null;
+            String nombreFichero = "fichero_" + numFichero + ".txt";
 
-            while (linea != null) {
-                if (contador % 20 == 0) {
-                    if (bw != null) {
-                        bw.close();
-                    }
-                    String nombreFichero = "fichero_" + numFichero + ".txt";
-                    File fichero = new File(nombreFichero);
-                    FileWriter fw = new FileWriter(fichero);
-                    bw = new BufferedWriter(fw);
-                    numFichero++;
-                }
-                bw.write(linea);
-                bw.newLine();
+            PrintWriter escritor = new PrintWriter(nombreFichero);
 
+            while ((linea = lector.readLine()) != null) {
+                escritor.println(linea);
                 contador++;
-                linea = br.readLine();
-            }
 
-            if (bw != null) {
-                bw.close();
+                if (contador > 20) {
+                    escritor.close();
+                    numFichero++;
+
+                    nombreFichero = "fichero_" + numFichero + ".txt";
+                    escritor = new PrintWriter(nombreFichero);
+                    contador = 1;
+                }
             }
+            escritor.close();
+
             System.out.println("Proceso acabado");
         } catch (Exception e) {
             System.out.println("No se pudo completar " + e.getMessage());
