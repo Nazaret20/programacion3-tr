@@ -2,9 +2,9 @@ import java.io.Serializable;
 
 public class Contacto implements Serializable {
     private String nombre;
-    private double telefono;
+    private String telefono;
     
-    public Contacto(String nombre, double telefono) {
+    public Contacto(String nombre, String telefono) {
         this.nombre = nombre;
         this.telefono = telefono;
     }
@@ -17,11 +17,11 @@ public class Contacto implements Serializable {
         this.nombre = nombre;
     }
 
-    public double getTelefono() {
+    public String getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(double telefono) {
+    public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
