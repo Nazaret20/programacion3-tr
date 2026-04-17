@@ -12,18 +12,14 @@ public class GestionNotas {
     }
 
     public void asignarNota(String nombreAlum, double notaAlum) {
-        for (Nota nota : listaNotas) {
-            
-        }
+        
     }
 
-    public Alumno buscarAlum(String nombreAlum) {
-        for (Nota nota : listaNotas) {
-            
-        }
-    }
+    // public Alumno buscarAlum(String nombreAlum) {
+        
+    // }
 
-    public void alimiNotas() {
+    public void elimiNotas() {
 
     }
 
