@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+
 public class GestorDatos {
 
     private ArrayList<Alumno> alumnos;
@@ -26,7 +27,8 @@ public class GestorDatos {
 
     public void setAsignaturas(ArrayList<Asignatura> asignaturas) {
         this.asignaturas = asignaturas;
-    }    
+    }
+
+    
+    
 }
-
-
