@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class GestorDatos {
+public class GestorDatos implements Serializable {
 
     private ArrayList<Alumno> alumnos;
     private ArrayList<Asignatura> asignaturas;
