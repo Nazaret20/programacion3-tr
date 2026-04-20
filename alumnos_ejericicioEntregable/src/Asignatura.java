@@ -19,4 +19,5 @@ public class Asignatura implements Serializable{
     public String toString() {
         return nombre;
     }
+
 }

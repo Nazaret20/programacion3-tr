@@ -1,10 +1,4 @@
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AppAlumnoFichero {
@@ -45,18 +39,10 @@ public class AppAlumnoFichero {
             opc = Integer.parseInt(sc.nextLine());
 
             switch (opc) {
-                case 1:
-                    menuAlumnos();
-                    break;
-                case 2:
-                    menuAsignatura();
-                    break;
-                case 3:
-                    menuNotas();
-                    break;
-                case 4:
-                    menuDatos();
-                    break;
+                case 1: menuAlumnos(); break;
+                case 2: menuAsignatura(); break;
+                case 3: menuNotas(); break;
+                case 4: menuDatos(); break;
                 case 0:
                     System.out.println("Gracias por usar el programa.");
                     break;
@@ -84,17 +70,10 @@ public class AppAlumnoFichero {
             opc = Integer.parseInt(sc.nextLine());
 
             switch (opc) {
-                case 1:
-                    altaAlumnos();
-                    break;
-                case 2:
-                    bajaAlumno();
-                    break;
-                case 3:
-                    listaAlumnos();
-                    break;
-                case 0:
-                    break;
+                case 1: altaAlumnos(); break;
+                case 2: bajaAlumno(); break;
+                case 3: listaAlumnos(); break;
+                case 0: break;
                 default:
                     System.out.println("Opción invalida.");
                     esperaIntro();
@@ -111,19 +90,14 @@ public class AppAlumnoFichero {
         System.out.print("Curso al que pertenecerá: ");
         String curso = sc.nextLine();
 
-        Alumno a = new Alumno(nombre, curso);
-        datos.getAlumnos().add(a);
+        datos.nuevoAlumno(nombre, curso);
     }
 
     private void bajaAlumno() {
         System.out.print("Nombre del alumno: ");
         String nombre = sc.nextLine();
 
-        for (Alumno a : datos.getAlumnos()) {
-            if (nombre.equalsIgnoreCase(a.getNombre())) {
-                datos.getAlumnos().remove(a);
-            }
-        }
+        datos.eliminarAlumno(nombre);;
     }
 
     private void listaAlumnos() {
@@ -149,17 +123,10 @@ public class AppAlumnoFichero {
             opc = Integer.parseInt(sc.nextLine());
 
             switch (opc) {
-                case 1:
-                    nuevaAsigntura();
-                    break;
-                case 2:
-                    elimiAsigntura();
-                    break;
-                case 3:
-                    listaAsignturas();
-                    break;
-                case 0:
-                    break;
+                case 1: nuevaAsigntura(); break;
+                case 2: elimiAsigntura(); break;
+                case 3: listaAsignturas(); break;
+                case 0: break;
                 default:
                     System.out.println("Opción invalida.");
                     esperaIntro();
@@ -172,26 +139,18 @@ public class AppAlumnoFichero {
     private void nuevaAsigntura() {
         System.out.print("Nombre de la asignatura: ");
         String nombre = sc.nextLine();
-
-        Asignatura a = new Asignatura(nombre);
-        datos.getAsignaturas().add(a);
+        datos.nuevaAsigntura(nombre);
+       
     }
 
     private void elimiAsigntura() {
         System.out.print("Nombre de la asignatura: ");
         String nombre = sc.nextLine();
-
-        for (Asignatura a : datos.getAsignaturas()) {
-            if (nombre.equalsIgnoreCase(a.getNombre())) {
-                datos.getAsignaturas().remove(a);
-            }
-        }
+        datos.eliminarAsigntura(nombre);
     }
 
     private void listaAsignturas() {
-        for (Asignatura a : datos.getAsignaturas()) {
-            System.out.println(a);
-        }
+        datos.listAsignatura();
     }
 
     // ----------------Gestion notas----------------
@@ -209,17 +168,10 @@ public class AppAlumnoFichero {
             opc = Integer.parseInt(sc.nextLine());
 
             switch (opc) {
-                case 1:
-                    asignarNotaAAlumno();
-                    break;
-                case 2:
-                    elimiNotaDeAlumno();
-                    break;
-                case 3:
-                    listaAlumnoYNotas();
-                    break;
-                case 0:
-                    break;
+                case 1: asignarNotaAAlumno(); break;
+                case 2: elimiNotaDeAlumno(); break;
+                case 3: listaAlumnoYNotas(); break;
+                case 0: break;
                 default:
                     System.out.println("Opción invalida.");
                     esperaIntro();
@@ -328,14 +280,9 @@ public class AppAlumnoFichero {
             opc = Integer.parseInt(sc.nextLine());
 
             switch (opc) {
-                case 1:
-                    guardarDatos();
-                    break;
-                case 2:
-                    cargarDatos();
-                    break;
-                case 0:
-                    break;
+                case 1: guardarDatos(); break;
+                case 2: cargarDatos(); break;
+                case 0: break;
                 default:
                     System.out.println("Opción invalida.");
                     esperaIntro();
@@ -345,31 +292,12 @@ public class AppAlumnoFichero {
     }
 
     private void guardarDatos() {
-    try (ObjectOutputStream oos = new ObjectOutputStream(
-            new FileOutputStream("boletin.bin"))) {
-
-        oos.writeObject(datos.getAlumnos());
-        
-        System.out.println("\nLibreta guardada correctamente.");
-    } catch (IOException e) {
-        System.err.println("Error al guardar: " + e.getMessage());
-    }
-
-    System.out.println("\n(Pulse intro para continuar)");
-    sc.nextLine();
+        datos.guardar();
+    
 }
 
     private void cargarDatos() {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("boletin.bin"))) {
+        datos.cargar();
         
-        ArrayList<Alumno> listaCargada = (ArrayList<Alumno>) ois.readObject();
-        
-        datos.setAlumnos(listaCargada);
-        
-        System.out.println("Datos cargados: " + listaCargada.size() + " alumnos encontrados.");
-
-    } catch (IOException | ClassNotFoundException e) {
-        System.err.println("Error al cargar los datos: " + e.getMessage());
-    }
     }
 }
