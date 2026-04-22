@@ -49,7 +49,7 @@ public class GestorDatos {
 
       
     }
-
+    @SuppressWarnings("unchecked")
     public void cargar() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("boletin.bin"));) {
             alumnos.clear();
@@ -99,8 +99,33 @@ public class GestorDatos {
     }
 
     /*--------------Notas--------------- */
-    public void asignarNotaAAlumno() {
+    Asignatura asignaturaEncontrada = null;
+    public void asignarNotaAAlumno(String nombre, String asignatura, double nota) {
+        for (Asignatura a : asignaturas) {
+            if (a.getNombre().equalsIgnoreCase(nombre)) {
+                asignaturaEncontrada = a;
+                break;
+            }
+        }
 
+
+        if (asignaturaEncontrada == null) {
+            System.out.println("Error: La asignatura no existe.");
+            return; 
+        }
+         boolean alumnoEncontrado = false;
+        for (Alumno a : datos.getAlumnos()) {
+            if (a.getNombre().equalsIgnoreCase(nombre)) {
+                a.getNotas().put(asignaturaEncontrada, nota);
+                alumnoEncontrado = true;
+                System.out.println("Nota registrada correctamente.");
+                break;
+            }
+        }
+
+        if (!alumnoEncontrado) {
+            System.out.println("Error: El alumno no existe.");
+        }
     }
 
     public void elimiNotaDeAlumno() {

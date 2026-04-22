@@ -1,11 +1,13 @@
-public class Temperatura {
-    private int dia, mes, anio;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+public class Temperatura implements Serializable {
+    private LocalDate date;
     private double tempMax, tempMin;
     
-    public Temperatura(int dia, int mes, int anio, double tempMax, double tempMin) {
-        this.dia = dia;
-        this.mes = mes;
-        this.anio = anio;
+    public Temperatura(LocalDate date, double tempMax, double tempMin) {
+        this.date = date;
         this.tempMax = tempMax;
         this.tempMin = tempMin;
     }
@@ -13,32 +15,8 @@ public class Temperatura {
 
     @Override
     public String toString() {
-        return dia + "/" + mes + "/" + anio + ": " + tempMax + "ºC | " + tempMin + "ºC";
-    }
-
-
-    public int getDia() {
-        return dia;
-    }
-
-    public void setDia(int dia) {
-        this.dia = dia;
-    }
-
-    public int getMes() {
-        return mes;
-    }
-
-    public void setMes(int mes) {
-        this.mes = mes;
-    }
-
-    public int getAnio() {
-        return anio;
-    }
-
-    public void setAnio(int anio) {
-        this.anio = anio;
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return formato + ": " + tempMax + "ºC | " + tempMin + "ºC";
     }
 
     public double getTempMax() {
@@ -55,6 +33,16 @@ public class Temperatura {
 
     public void setTempMin(double tempMin) {
         this.tempMin = tempMin;
+    }
+
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     

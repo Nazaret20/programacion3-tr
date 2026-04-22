@@ -187,35 +187,10 @@ public class AppAlumnoFichero {
         System.out.print("Asignatura: ");
         String asignatura = sc.nextLine();
 
-        Asignatura asignaturaEncontrada = null;
-        for (Asignatura a : datos.getAsignaturas()) {
-            if (a.getNombre().equalsIgnoreCase(asignatura)) {
-                asignaturaEncontrada = a;
-                break;
-            }
-        }
-
-        if (asignaturaEncontrada == null) {
-            System.out.println("Error: La asignatura no existe.");
-            return; // Cortamos el método aquí
-        }
-
         System.out.print("Nota: ");
         double nota = Double.parseDouble(sc.nextLine());
 
-        boolean alumnoEncontrado = false;
-        for (Alumno a : datos.getAlumnos()) {
-            if (a.getNombre().equalsIgnoreCase(nombre)) {
-                a.getNotas().put(asignaturaEncontrada, nota);
-                alumnoEncontrado = true;
-                System.out.println("Nota registrada correctamente.");
-                break;
-            }
-        }
-
-        if (!alumnoEncontrado) {
-            System.out.println("Error: El alumno no existe.");
-        }
+       datos.asignarNotaAAlumno(nombre, asignatura, nota);
     }
 
     private void elimiNotaDeAlumno() {
@@ -243,8 +218,6 @@ public class AppAlumnoFichero {
             if (a.getNombre().equalsIgnoreCase(nombre)) {
                 encontrado = true;
 
-                // 3. Intentamos eliminar del Map
-                // remove() devuelve el valor eliminado o null si no existía
                 Double notaEliminada = a.getNotas().remove(asigAEliminar);
 
                 if (notaEliminada != null) {
