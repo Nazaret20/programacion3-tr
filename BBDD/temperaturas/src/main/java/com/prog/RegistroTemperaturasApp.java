@@ -9,27 +9,24 @@ public class RegistroTemperaturasApp {
     private GestorDatos datos;
     private DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-
-    
-    public RegistroTemperaturasApp() {
+    RegistroTemperaturasApp() {
         this.sc = new Scanner(System.in);
         this.datos = new GestorDatos();
-    }
-
-    private void cls() {
-        System.out.println("\033[H\033[2J");
-    }
-
-    private void esperaIntro() {
-        System.out.println("\n[Pulse intro para continuar.]");
-        sc.nextLine();
     }
 
     public static void main(String[] args) throws Exception {
         RegistroTemperaturasApp app = new RegistroTemperaturasApp();
         app.menu();
         app.sc.close();
-        
+    }
+
+    private void cls() {
+        System.out.print("\033[H\033[2J");
+    }
+
+    private void esperaIntro() {
+        System.out.println("\n[Pulse intro para continuar]");
+        sc.nextLine();
     }
 
     private void menu() {
@@ -37,80 +34,94 @@ public class RegistroTemperaturasApp {
 
         do {
             cls();
-            System.out.println("--- Registro de temperatura ---");
-            System.out.println("\n1. Nuevo registro\r\n" + //
-                    "2. Modificar temperatura de una fecha\r\n" + //
-                    "3. Consultar temperaturas por fecha\r\n" + //
-                    "4. Calcular promedio de temperaturas por mes\r\n" + //
-                    "0. Salir");
-            System.out.print("\tIntroduce una opción: ");
+            System.out.println("===== Registro de Temperaturas =====\n");
+            System.out.println("1.- Añadir nuevo registro\r\n" + //
+                    "2.- Modificar temperatura de una fecha\r\n" + //
+                    "3.- Consultar temperaturas por fecha\r\n" + //
+                    "4.- Calcular promedio de temperaturas por mes\r\n" + //
+                    "0.- Salir");
+            System.out.print("\tSeleccione opción: ");
             opc = Integer.parseInt(sc.nextLine());
 
             switch (opc) {
-                case 1: anadirReg(); esperaIntro(); break;
-                case 2: modificarT(); esperaIntro(); break;
-                case 3: consultarT(); esperaIntro(); break;
-                case 4: calcMedia(); esperaIntro(); break;
+                case 1:
+                    addRegistro();
+                    esperaIntro();
+                    break;
+                case 2:
+                    updateRegistro();
+                    esperaIntro();
+                    break;
+                case 3:
+                    showRegistro();
+                    esperaIntro();
+                    break;
+                case 4:
+                    calcularPromedio();
+                    esperaIntro();
+                    break;
                 case 0:
-                    System.out.println("¡Hasta la próxima!"); break;
+                    System.out.println("Finalizado correctamente.");
+                    break;
                 default:
-                    System.out.println("Opción inválida"); esperaIntro(); break;
+                    System.out.println("Opción no válida.");
+                    esperaIntro();
+                    break;
             }
+
         } while (opc != 0);
-
     }
 
-    private void anadirReg() {
+    private void addRegistro() {
         cls();
-        System.out.println("--- Añadir registro ---");
-        System.out.print("Fecha (dd/MM/yyyy): ");
+        System.out.println("--- Añadir Registro ---");
+        System.out.print("Dame la fecha (dd/MM/yyyy): ");
+        LocalDate fecha = LocalDate.parse(sc.nextLine(), formato);
+        System.out.print("Dame la temperatura máxima: ");
+        double tMax = Double.parseDouble(sc.nextLine());
+        System.out.print("Dame la temperatura mínima: ");
+        double tMin = Double.parseDouble(sc.nextLine());
+
+        datos.addRegistro(fecha, tMax, tMin);
+    }
+
+    private void updateRegistro() {
+        cls();
+        System.out.println("--- Modificar Registro ---");
+        System.out.print("Dame la fecha (dd/MM/yyyy): ");
+        LocalDate fecha = LocalDate.parse(sc.nextLine(), formato);
+        System.out.print("Dame la nueva temperatura máxima: ");
+        double tMax = Double.parseDouble(sc.nextLine());
+        System.out.print("Dame la nueva temperatura mínima: ");
+        double tMin = Double.parseDouble(sc.nextLine());
+
+        datos.updateRegistro(fecha, tMax, tMin);
+    }
+
+    private void showRegistro() {
+        cls();
+        System.out.println("--- Consultar Registro ---");
+        System.out.print("Dame la fecha (dd/MM/yyyy): ");
         LocalDate fecha = LocalDate.parse(sc.nextLine(), formato);
 
-        System.out.print("Temperatura máxima: ");
-        double tempMax = Double.parseDouble(sc.nextLine());
-
-        System.out.print("Temperatura mínima: ");
-        double tempMin = Double.parseDouble(sc.nextLine());
-
-        datos.anadir(fecha, tempMax, tempMin);
+        datos.showRegistro(fecha);
     }
 
-    private void modificarT() {
+    private void calcularPromedio() {
         cls();
-        System.out.println("--- Modificar registro ---");
-        System.out.print("Fecha (dd/MM/yyyy): ");
-        LocalDate fecha = LocalDate.parse(sc.nextLine(), formato);
-
-        System.out.print("Temperatura máxima nueva: ");
-        double tempMax = Double.parseDouble(sc.nextLine());
-
-        System.out.print("Temperatura mínima nueva: ");
-        double tempMin = Double.parseDouble(sc.nextLine());
-
-        datos.modificarDatos(fecha, tempMax, tempMin);;
-    }
-
-    private void consultarT() {
-        cls();
-        System.out.println("--- Consultar registro ---");
-        System.out.print("Fecha (dd/MM/yyyy): ");
-        LocalDate fecha = LocalDate.parse(sc.nextLine(), formato);
-        datos.consultarDatos(fecha);
-    }
-
-    private void calcMedia() {
-        cls();
-        System.out.println("--- Calcular media ---");
-        System.out.print("Mes (en número): ");
+        System.out.println("--- Calcular Promedio ---");
+        System.out.print("Dame el mes (en número): ");
         int mes = Integer.parseInt(sc.nextLine());
 
-        double[] media = datos.calcularMedia(mes);
+        double[] promedios = datos.calcularPromedio(mes);
 
-        if (media != null) {
-            System.out.printf("La media es: [%.2f,%.2f]", media[0], media[1]);
-
-        } else {
-            System.out.println("No hay datos");
+        if (promedios != null) {
+            System.out.printf("Los promedios son: [%.2f, %.2f]",
+                    promedios[0],
+                    promedios[1]);
         }
+        else
+            System.out.println("No se encontraron datos");
+
     }
 }
