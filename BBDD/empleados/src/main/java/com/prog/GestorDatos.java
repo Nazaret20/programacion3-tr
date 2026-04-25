@@ -1,20 +1,57 @@
 package com.prog;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.sql.*;
 
 public class GestorDatos {
-    private ArrayList<Empleado> listaEmpleados;
 
-    
+    public void addEmpleado(String nombre, String apellido, double salario) {
+        try (Connection con = openConnection();) {
+            String sqlStr = "INSERT INTO empleados (nombre, apellido, salario) VALUES ('" + nombre + "', '" + apellido + "', " + salario
+                    + ")";
 
-    public GestorDatos(ArrayList<Empleado> listaEmpleados) {
-        this.listaEmpleados = listaEmpleados;
+            Statement s = con.createStatement();
+            s.executeUpdate(sqlStr);
+
+            System.out.println("Añadido correctamente.");
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
 
+    public void rmvEmpleado(String nombre) {
+        try (Connection con = openConnection();) {
+            String sqlStr = "DELETE FROM empleados WHERE nombre = '" + nombre + "'";
 
+            Statement s = con.createStatement();
+            s.executeUpdate(sqlStr);
+
+            System.out.println(nombre + " se eliminó correctamente.");
+
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
+   
+    public void updateEmpleado(String nombre, String columna, Object datoAModificar) {
+        try (Connection con = openConnection();) {
+            String sqlStr = "UPDATE empleados SET " + columna + " = ? WHERE nombre = ?";
+
+            PreparedStatement pstmt = con.prepareStatement(sqlStr);
+            pstmt.setObject(1, datoAModificar);
+            pstmt.setString(2, nombre); 
+
+            int filas = pstmt.executeUpdate();
+            if (filas > 0) {
+                System.out.println("Actualizado con éxito.");
+            } else {
+                System.out.println("No se encontró al empleado.");
+            }
+
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+
+    }
 
     public static Connection openConnection() {
         Connection con = null;
@@ -22,7 +59,7 @@ public class GestorDatos {
             // Creamos la URL de conexión
             // Formato:
             // jdbc:mariadb://servidor:puerto/nombreBaseDatos?usuario=xxx&contraseña=xxx
-            String connectionUrl = "jdbc:mariadb://localhost:3306/bdprueba1?user=root&password=nazaret";
+            String connectionUrl = "jdbc:mariadb://localhost:3306/empleadosdb?user=root&password=1234";
 
             // Obtenemos el objeto Connection que representa la conexión
             con = DriverManager.getConnection(connectionUrl);
@@ -31,7 +68,7 @@ public class GestorDatos {
             // Capturamos errores relacionados con SQL y la base de datos
             System.out.println("Excepción SQL: " + e.getMessage());
         }
-    
+
         return con;
     }
 }
