@@ -53,6 +53,23 @@ public class GestorDatos {
 
     }
 
+    public void showEmpleados() {
+         try (Connection con = openConnection();) {
+            String sqlStr = "SELECT * FROM empleados";
+
+            Statement s = con.createStatement();
+            ResultSet rs = s.executeQuery(sqlStr);
+
+            while (rs.next()) {
+                System.out.println(rs.getString("nombre") + " " + rs.getString("apellido") + ", " + rs.getDouble("salario"));
+
+            }
+
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
+
     public static Connection openConnection() {
         Connection con = null;
         try {

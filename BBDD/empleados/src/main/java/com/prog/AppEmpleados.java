@@ -15,10 +15,10 @@ public class AppEmpleados {
     //     System.out.print("\033[H\033[2J");
     // }
 
-    private void esperaIntro() {
-        System.out.println("\n[Pulse intro para continuar]");
-        sc.nextLine();
-    }
+    // private void esperaIntro() {
+    //     System.out.println("\n[Pulse intro para continuar]");
+    //     sc.nextLine();
+    // }
 
     /*------------------------------------------- */
     public static void main(String[] args) {
@@ -45,8 +45,8 @@ public class AppEmpleados {
                 case 2: rmvEmpleado(); break;
                 case 3: updateEmpleado(); break;
                 case 4: showEmpleados(); break;
-                case 5: System.err.println("Finalizado correctamente."); esperaIntro(); break;
-                default: System.out.println("Opción no válida."); esperaIntro(); break;
+                case 5: System.err.println("Finalizado correctamente."); break;
+                default: System.out.println("Opción no válida."); break;
             }
         } while (opc != 5);
     }
@@ -98,6 +98,7 @@ public class AppEmpleados {
     }   
 
     private void showEmpleados() {
-
+        System.out.println("\n--- Lista de empleados ---");
+        datos.showEmpleados();
     }
 }
