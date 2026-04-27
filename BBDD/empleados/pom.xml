@@ -14,7 +14,6 @@
     </properties>
 
     <dependencies>
-        <!-- Conector para MariaDB -->
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
