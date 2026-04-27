@@ -5,12 +5,14 @@ import java.sql.*;
 public class GestorDatos {
 
     public void addEmpleado(String nombre, String apellido, double salario) {
-        try (Connection con = openConnection();) {
-            String sqlStr = "INSERT INTO empleados (nombre, apellido, salario) VALUES ('" + nombre + "', '" + apellido + "', " + salario
-                    + ")";
+        String sqlStr = "INSERT INTO empleados (nombre, apellido, salario) VALUES (?, ?, ?)";
 
-            Statement s = con.createStatement();
-            s.executeUpdate(sqlStr);
+        try (Connection con = openConnection(); PreparedStatement pstmt = con.prepareStatement(sqlStr);) {
+            pstmt.setString(1, nombre);
+            pstmt.setString(2, apellido);
+            pstmt.setDouble(3, salario);
+            
+            pstmt.executeUpdate();
 
             System.out.println("Añadido correctamente.");
         } catch (Exception e) {
