@@ -1,97 +1,102 @@
 package com.prog;
 
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+
 public class GestorDatos {
-    private final String ARCHIVO = "temp.bin";
-    private final int REGISTRO_SIZE = Long.BYTES + Double.BYTES * 2;
+    
     private DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 
     public void anadir(LocalDate fecha, double tMax, double tMin) {
-        try (RandomAccessFile raf = new RandomAccessFile(ARCHIVO, "rw")) {
-            raf.seek(raf.length());
-            raf.writeLong(fecha.toEpochDay());
-            raf.writeDouble(tMax);
-            raf.writeDouble(tMin);
+        try (Connection con = openConnection();) {
+            String sqlString = "INSERT INTO registro (fecha, tMax, tMin) VALUES ('" + fecha + "', " + tMax + ", " + tMin + ")";
+
+            Statement s = con.createStatement();
+            s.executeUpdate(sqlString);
+
         } catch (Exception e) {
             // TODO: handle exception
         }
     }
     
     public void modificarDatos(LocalDate fecha, double tMax, double tMin) {
-        boolean encontrado = false;
-        try (RandomAccessFile raf = new RandomAccessFile(ARCHIVO, "rw")) {
-            for (int i = 0; i < raf.length(); i = i + REGISTRO_SIZE) {
-                raf.seek(i);
-                if (fecha.toEpochDay() == raf.readLong()) {
-                    raf.writeDouble(tMax);
-                    raf.writeDouble(tMin);
-                    encontrado = true;
-                }
-            }
+       try (Connection con = openConnection();) {
+            String sqlString = "UPDATE registro SET fecha = '" + fecha + "', tMax = " + tMax + ", tMin = " + tMin + " WHERE fecha = '" + fecha + "";
+
+            Statement s = con.createStatement();
+            s.executeUpdate(sqlString);
+
         } catch (Exception e) {
             // TODO: handle exception
-        }
-
-        if (encontrado) {
-            System.out.println("Actualizado correctamente");
-        } else {
-            System.out.println("Fecha no encontrada");
         }
     }
 
     public void consultarDatos(LocalDate fecha) {
-         boolean encontrado = false;
-        try (RandomAccessFile raf = new RandomAccessFile(ARCHIVO, "r")) {
-            for (int i = 0; i < raf.length(); i = i + REGISTRO_SIZE) {
-                raf.seek(i);
-                if (fecha.toEpochDay() == raf.readLong()) {
-                    System.out.printf("%s [%.2f,%.2f]", fecha.format(formato), raf.readDouble(), raf.readDouble());
-                    encontrado = true;
+        try (Connection con = openConnection();) {
+            String sqlString = "SELECT * FROM registro";
+
+            Statement s = con.createStatement();
+            ResultSet rs = s.executeQuery(sqlString);
+
+            while (rs.next()) {
+                LocalDate fechaBD = LocalDate.parse(rs.getString("fecha"));
+
+                if (fecha.equals(fechaBD)) {
+                    System.out.println(fecha.format(formato));
+                    System.out.println("\t" + rs.getDouble("tMax"));
+                    System.out.println("\t" + rs.getDouble("tMin") + "\n");
+
                 }
             }
+
         } catch (Exception e) {
             // TODO: handle exception
         }
-
-        if (!encontrado) {
-            System.out.println("Registro no encontrado");
-        } 
     }
 
     public double[] calcularMedia(int mes) {
-        double sumaMax = 0;
-        double sumaMin = 0;
-        int numTemps = 0;
+            double[] promedios = new double[2];
 
-        try (RandomAccessFile raf = new RandomAccessFile(ARCHIVO, "r")) {
-            for (int i = 0; i < raf.length(); i = i + REGISTRO_SIZE) {
-                raf.seek(i);
-                if (mes == LocalDate.ofEpochDay(raf.readLong()).getMonthValue()) {
-                    sumaMax += raf.readDouble();
-                    sumaMax += raf.readDouble();
-                    numTemps++;
-                }
+        try (Connection con = openConnection();) {
+            String sqlString = "SELECT AVG(tMax) AS mediaMax, AVG(tMin) AS mediaMin FROM registro WHERE MONTH(fecha) = " + mes;
+
+            Statement s = con.createStatement();
+            ResultSet rs = s.executeQuery(sqlString);
+
+            if(rs.next()) {
+                promedios[0] = rs.getDouble("mediaMax");
+                promedios[1] = rs.getDouble("mediaMin");
             }
+
+          
         } catch (Exception e) {
             // TODO: handle exception
         }
 
-        if (numTemps > 0) {
-            double[] medias = new double[2];
-            medias[0] = sumaMax / numTemps;
-            medias[1] = sumaMin / numTemps;
-            return medias;
-        } else {
-            return null;
+        return promedios;
+ 
+    }
 
+    public static Connection openConnection() {
+        Connection con = null;
+        try {
+            // Creamos la URL de conexión
+            // Formato:
+            // jdbc:mariadb://servidor:puerto/nombreBaseDatos?usuario=xxx&contraseña=xxx
+            String connectionUrl = "jdbc:mariadb://localhost:3306/registro_temp?user=root&password=nazaret";
+
+            // Obtenemos el objeto Connection que representa la conexión
+            con = DriverManager.getConnection(connectionUrl);
+
+        } catch (SQLException e) {
+            // Capturamos errores relacionados con SQL y la base de datos
+            System.out.println("Excepción SQL: " + e.getMessage());
         }
-
-        
+    
+        return con;
     }
 
 }
