@@ -20,14 +20,14 @@ public class GestorDatos {
         }
     }
 
-    public void rmvEmpleado(String nombre) {
-        try (Connection con = openConnection();) {
-            String sqlStr = "DELETE FROM empleados WHERE nombre = '" + nombre + "'";
+    public void rmvEmpleado(String nombre, String apellido) {
+        String sqlStr = "DELETE FROM empleados WHERE nombre = ? AND apellido = ?";
+        try (Connection con = openConnection(); PreparedStatement pstmt = con.prepareStatement(sqlStr);) {
 
-            Statement s = con.createStatement();
-            s.executeUpdate(sqlStr);
+            pstmt.setString(1, nombre);
+            pstmt.setString(2, apellido);
 
-            System.out.println(nombre + " se eliminó correctamente.");
+            System.out.println(nombre + " " + apellido + " se eliminó correctamente.");
 
         } catch (Exception e) {
             // TODO: handle exception

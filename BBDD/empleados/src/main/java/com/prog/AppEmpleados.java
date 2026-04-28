@@ -11,14 +11,14 @@ public class AppEmpleados {
         this.datos = new GestorDatos();
     }
 
-    // private void cls() {
-    //     System.out.print("\033[H\033[2J");
-    // }
+    private void cls() {
+        System.out.print("\033[H\033[2J");
+    }
 
-    // private void esperaIntro() {
-    //     System.out.println("\n[Pulse intro para continuar]");
-    //     sc.nextLine();
-    // }
+    private void esperaIntro() {
+        System.out.println("\n[Pulse intro para continuar]");
+        sc.nextLine();
+    }
 
     /*------------------------------------------- */
     public static void main(String[] args) {
@@ -29,6 +29,7 @@ public class AppEmpleados {
     /*------------------------------------------- */
 
     private void menu() {
+        cls();
         int opc;
 
         do {
@@ -41,12 +42,12 @@ public class AppEmpleados {
              opc = Integer.parseInt(sc.nextLine());
 
             switch (opc) {
-                case 1: addEmpleado(); break;
-                case 2: rmvEmpleado(); break;
-                case 3: updateEmpleado(); break;
-                case 4: showEmpleados(); break;
-                case 5: System.err.println("Finalizado correctamente."); break;
-                default: System.out.println("Opción no válida."); break;
+                case 1: addEmpleado(); esperaIntro(); break;
+                case 2: rmvEmpleado(); esperaIntro(); break;
+                case 3: updateEmpleado(); esperaIntro(); break;
+                case 4: showEmpleados(); esperaIntro(); break;
+                case 5: System.err.println("Finalizado correctamente."); esperaIntro(); break;
+                default: System.out.println("Opción no válida."); esperaIntro(); break;
             }
         } while (opc != 5);
     }
@@ -70,7 +71,10 @@ public class AppEmpleados {
         System.out.print("Introdude nombre: ");
         String nombre = sc.nextLine();
 
-        datos.rmvEmpleado(nombre);
+        System.out.print("Introduce apellido: ");
+        String apellido = sc.nextLine();
+
+        datos.rmvEmpleado(nombre, apellido);
     }
 
     private void updateEmpleado() {
