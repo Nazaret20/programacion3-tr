@@ -56,7 +56,7 @@ public class GestorDatos {
     }
 
     public void showEmpleados() {
-         try (Connection con = openConnection();) {
+        try (Connection con = openConnection();) {
             String sqlStr = "SELECT * FROM empleados";
 
             Statement s = con.createStatement();
