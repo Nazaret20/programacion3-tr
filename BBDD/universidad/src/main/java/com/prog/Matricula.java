@@ -32,15 +32,22 @@ public class Matricula {
     }
 
     public void showEst(String claveCurso) {
-        try (Connection con = openConnection();) {
-            String sqlStr = "SELECT c.clave FROM cursos c JOIN  estudiantes e ON e.id = c.id";
+        String sqlStr = "SELECT e.matricula, e.nombre, e.apellidos, m.promedio, m.estatus, c.semestre " +
+                "FROM cursos c " +
+                "JOIN matriculas m ON m.curso_id = c.id " +
+                "JOIN estudiantes e ON e.id = m.estudiante_id " +
+                "WHERE c.clave = ?";
 
-            Statement s = con.createStatement();
-            ResultSet rs = s.executeQuery(sqlStr);
+        try (Connection con = openConnection(); PreparedStatement pstmt = con.prepareStatement(sqlStr);) {
+            pstmt.setString(1, claveCurso);
+            
+            ResultSet rs = pstmt.executeQuery(sqlStr);
 
+            
             while (rs.next()) {
+                System.out.println("Curso " + claveCurso + " - " + rs.getString("semestre"));
                 
-                System.out.println("Matrícula" + rs.getString("matricula") + rs.getString("nombre") + " " + rs.getString("apellidos"));
+                // System.out.println("Matrícula" + rs.getString("matricula") + rs.getString("nombre") + " " + rs.getString("apellidos"));
 
             }
 
@@ -60,7 +67,7 @@ public class Matricula {
             // Creamos la URL de conexión
             // Formato:
             // jdbc:mariadb://servidor:puerto/nombreBaseDatos?usuario=xxx&contraseña=xxx
-            String connectionUrl = "jdbc:mariadb://localhost:3306/empleadosdb?user=root&password=1234";
+            String connectionUrl = "jdbc:mariadb://localhost:3306/universidad?user=root&password=1234";
 
             // Obtenemos el objeto Connection que representa la conexión
             con = DriverManager.getConnection(connectionUrl);
