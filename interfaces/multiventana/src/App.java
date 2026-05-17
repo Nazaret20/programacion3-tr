@@ -3,6 +3,10 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class App extends JFrame {
+    JDesktopPane multi;
+    JInternalFrame ventanaActual;
+    int contVentanas = 0;
+
     App() {
          try {
             // Establecer el Look & Feel a Nimbus
@@ -14,6 +18,7 @@ public class App extends JFrame {
 
         setLayout(new BorderLayout());
 
+        //------------Menú
         JMenuBar barra = new JMenuBar();
         JMenu archivo = new JMenu("Archivo");
         JMenuItem nuevo = new JMenuItem("Nuevo");
@@ -32,13 +37,21 @@ public class App extends JFrame {
 
         add(barra, BorderLayout.NORTH);
 
-        JDesktopPane multi = new JDesktopPane();
-        multi.setSize(200, 200);
-        multi.setVisible(true);
+        //-----------------Desktop
+        multi = new JDesktopPane();
         add(multi, BorderLayout.CENTER);
-        
-        
 
+        //----------------Menú acciones
+        nuevo.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                nuevaVentana("Sin título", "");
+            }
+        });
+        
+       
+
+
+        //--------------Ventana principal
         setSize(500, 500);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -50,6 +63,7 @@ public class App extends JFrame {
             }
         });
     }
+    //----------------MAIN
     public static void main(String[] args) throws Exception {
         App app = new App();
     }
