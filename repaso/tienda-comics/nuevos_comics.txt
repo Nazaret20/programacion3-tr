@@ -1,0 +1,10 @@
+The Amazing Spider-Man,Stan Lee,Superhéroes,14.95,10
+Batman: Año Uno,Frank Miller,Superhéroes,18.50,5
+Watchmen,Alan Moore,Novela Gráfica,25.00,3
+Saga Vol. 1,Brian K. Vaughan,Ciencia Ficción,12.99,8
+Akira Vol. 1,Katsuhiro Otomo,Manga,22.00,6
+Sandman: Preludios y Nocturnos,Neil Gaiman,Fantasía,19.95,4
+Dragon Ball Vol. 1,Akira Toriyama,Manga,7.95,15
+Maus,Art Spiegelman,Histórico,21.90,3
+Paper Girls 1,Brian K. Vaughan,Aventura,11.00,7
+Daredevil: Born Again,Frank Miller,Superhéroes,16.50,4
