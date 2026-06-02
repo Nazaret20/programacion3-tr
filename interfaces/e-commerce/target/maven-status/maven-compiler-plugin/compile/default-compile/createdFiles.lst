@@ -1,0 +1,14 @@
+com\prog\controlador\PedidoCont.class
+com\prog\entidades\DetallePedido.class
+com\prog\entidades\Producto.class
+com\prog\entidades\Categoria.class
+com\prog\entidades\Cliente.class
+com\prog\vista\VentanaInicio.class
+com\prog\controlador\ProductoCont.class
+com\prog\controlador\ClienteCont.class
+com\prog\vista\VentanaClientes.class
+com\prog\controlador\Conexion.class
+com\prog\entidades\AlertaStock.class
+com\prog\vista\VentanaProductos.class
+com\prog\Main.class
+com\prog\vista\VentanaPedidos.class
