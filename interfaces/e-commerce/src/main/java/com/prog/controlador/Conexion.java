@@ -14,9 +14,6 @@ public class Conexion {
             // Obtenemos el objeto Connection que representa la conexión
             con = DriverManager.getConnection(connectionUrl);
 
-        } catch (ClassNotFoundException e) {
-            // Capturamos errores si el driver no está disponible
-            System.out.println("Driver no encontrado: " + e.getMessage());
         } catch (SQLException e) {
             // Capturamos errores relacionados con SQL y la base de datos
             System.out.println("Excepción SQL: " + e.getMessage());
