@@ -1,6 +1,9 @@
 package com.prog.controlador;
 
 import java.sql.Statement;
+
+import com.prog.modeloEntidades.Conexion;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
