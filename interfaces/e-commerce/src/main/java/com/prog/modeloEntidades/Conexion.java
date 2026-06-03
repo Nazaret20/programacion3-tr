@@ -1,4 +1,4 @@
-package com.prog.controlador;
+package com.prog.modeloEntidades;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

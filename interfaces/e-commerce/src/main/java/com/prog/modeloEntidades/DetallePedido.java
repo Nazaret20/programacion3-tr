@@ -1,4 +1,4 @@
-package com.prog.entidades;
+package com.prog.modeloEntidades;
 
 public class DetallePedido {
     
