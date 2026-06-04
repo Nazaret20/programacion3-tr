@@ -25,13 +25,14 @@ public class ClienteControlador {
             ResultSet rs = s.executeQuery(sqlStr);
 
             while (rs.next()) {
-                
+
+                   int id = rs.getInt("id_cliente");
                    String nombre = rs.getString("nombre");
                    String email = rs.getString("email");
                    String telefono = rs.getString("telefono");
                    String direccion = rs.getString("direccion");
 
-                Cliente cliente = new Cliente(nombre, telefono, email, direccion);
+                Cliente cliente = new Cliente(id, nombre, telefono, email, direccion);
                 listaClientes.add(cliente);
             }
             

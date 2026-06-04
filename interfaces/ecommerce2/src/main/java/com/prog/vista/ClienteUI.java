@@ -23,39 +23,42 @@ public class ClienteUI extends JFrame {
 
     public ClienteUI() {
         initializeComponents();
+        cargarCliente();
     }
 
     private void initializeComponents() {
         setTitle("E-Commerce");
-        // Tabla de resultados
+        setSize(800, 800);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
         String[] nombresColumnas = { "Nombre", "Email", "Telefono", "Dirección" };
         modeloTabla = new DefaultTableModel(nombresColumnas, 0);
         resultTable = new JTable(modeloTabla);
-        
 
         JPanel resultPanel = new JPanel(new BorderLayout());
 
         resultPanel.add(new JScrollPane(resultTable), BorderLayout.CENTER);
 
-        // Añadir todos los paneles al frame
-        add(resultPanel, BorderLayout.SOUTH);
+        
+        add(resultPanel, BorderLayout.CENTER);
 
-        setSize(800, 800);
-        setLocationRelativeTo(null);
         setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
 
     public void cargarCliente() {
         ArrayList<Cliente> listaCliente2 = clienteBack.getClientes();
-        //Hacer for y hacer esto
-        modeloTabla.addRow(new Object[] {
-                "Diana",
-                "tucutu@gmail.com",
-                "123456",
-                "C/ Benito"
-        });
-        
+
+        modeloTabla.setRowCount(0);
+
+        for (Cliente cliente : listaCliente2) {
+            modeloTabla.addRow(new Object[] {
+                    cliente.getNombre(),
+                    cliente.getEmail(), 
+                    cliente.getTelefono(),
+                    cliente.getDireccion()
+            });
+        }
     }
 }

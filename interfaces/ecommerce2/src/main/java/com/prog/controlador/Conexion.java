@@ -7,7 +7,7 @@ public class Conexion {
         Connection con = null;
         try {
             // jdbc:mariadb://servidor:puerto/nombreBaseDatos?usuario=xxx&contraseña=xxx
-            String connectionUrl = "jdbc:mariadb://localhost:3306/ecommerce?user=root&password=1234";
+            String connectionUrl = "jdbc:mariadb://localhost:3306/ecommerce?user=root&password=nazaret";
 
             // Obtenemos el objeto Connection que representa la conexión
             con = DriverManager.getConnection(connectionUrl);
@@ -18,9 +18,5 @@ public class Conexion {
         }
         return con;
     }
-
-     public static Statement createStatement() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createStatement'");
-     }    
+   
 }
