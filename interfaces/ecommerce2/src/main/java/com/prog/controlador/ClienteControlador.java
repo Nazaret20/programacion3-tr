@@ -4,45 +4,119 @@ import java.sql.*;
 import java.util.*;
 
 import com.prog.modeloEntidad.Cliente;
+import com.prog.modeloEntidad.Producto;
 
 public class ClienteControlador {
     
-    public void anadirCliente(String nombre, String telefono, String email, String direccion) {
+    public void insertProducto(Cliente p) {
+        String sql = "INSERT INTO productos (nombre, descripcion, precio, id_cateogria, stock) VALUES (?, ?, ?, ?, ?)";
 
-    }
-
-    public void modificarCliente() {
-
-    }
-
-    public static ArrayList<Cliente> getClientes() {
-         ArrayList<Cliente> listaClientes = new ArrayList<>();
-
-        String sqlStr = "SELECT * FROM clientes";
         try (Connection con = Conexion.openConnection();
-                Statement s = con.createStatement();
-        ) {
-            ResultSet rs = s.executeQuery(sqlStr);
+                PreparedStatement ps = con.prepareStatement(sql);) {
 
-            while (rs.next()) {
+            ps.setString(1, p.getNombre());
+            ps.setString(2, p.getDescripcion());
+            ps.setDouble(3, p.getPrecio());
+            ps.setInt(4, p.getId_categoria());
+            ps.setInt(5, p.getStock());
 
-                   int id = rs.getInt("id_cliente");
-                   String nombre = rs.getString("nombre");
-                   String email = rs.getString("email");
-                   String telefono = rs.getString("telefono");
-                   String direccion = rs.getString("direccion");
+            ps.executeUpdate();
 
-                Cliente cliente = new Cliente(id, nombre, telefono, email, direccion);
-                listaClientes.add(cliente);
-            }
+        } catch (Exception e) {
+            // TODO: handle exception
+            System.out.println("No se ha podido insertar el producto: " + e.getMessage());
+
+        }
+    }
+
+    //Actualizar datos de un producto-------------------------------
+    public void updateProdcuto(Cliente p) {
+        String sql = "UPDATE producto SET nombre = ?, descripcion = ?, precio = ?, id_categoria = ?, stock = ? WHERE id_producto = ?";
+
+        try (Connection con = Conexion.openConnection();
+                PreparedStatement ps = con.prepareStatement(sql);) {
+            
+            ps.setString(1, p.getNombre());
+            ps.setString(2, p.getDescripcion());
+            ps.setDouble(3, p.getPrecio());
+            ps.setInt(4, p.getId_categoria());
+            ps.setInt(5, p.getStock());
+            ps.setInt(6, p.getId_producto());
+
+            ps.executeUpdate();
             
         } catch (Exception e) {
             // TODO: handle exception
-        }
+            System.out.println("No se ha podido modificar el producto: " + e.getMessage());
 
-        return listaClientes;
-     
+        }
     }
+
+    //Eliminar producto-------------------------------------------
+    public void deleteProducto(Cliente p) {
+        String sql = "DELETE FROM producto WHERE id_producto = ?";
+
+        try (Connection con = Conexion.openConnection();
+                PreparedStatement ps = con.prepareStatement(sql);) {
+
+            ps.setInt(1, p.getId_producto());
+            ps.executeUpdate();
+            
+        } catch (Exception e) {
+            // TODO: handle exception
+            System.out.println("No se ha podido eliminar el producto: " + e.getMessage());
+
+        }
+    }
+
+    // Mostrar todos los productos-------------------------------
+    public ArrayList<Producto> showProductos() {
+        String sql = "SELECT * FROM productos";
+
+        try (Connection con = Conexion.openConnection();
+                Statement s = con.createStatement();
+                ResultSet rs = s.executeQuery(sql);) {
+
+            while (rs.next()) {
+                Producto producto = new Producto(
+                        rs.getInt("id_producto"), rs.getInt("id_categoria"), rs.getInt("stock"), rs.getString("nombre"),
+                        rs.getString("descripcion"), rs.getDouble("precio"));
+
+                listaProductos.add(producto);
+            }
+
+        } catch (SQLException e) {
+            // TODO: handle exception
+            System.out.println("No se han podido mostrar los productos: " + e.getMessage());
+
+        }
+        return listaProductos;
+    }
+
+    // Buscar productos por el nombre-----------------------------
+    public ArrayList<Producto> buscarPorNombre(String nombre) {
+        String sql = "SELECT * FROM productos WHERE nombre = ?";
+
+        try (Connection con = Conexion.openConnection();
+                Statement s = con.createStatement();
+                ResultSet rs = s.executeQuery(sql);) {
+
+            while (rs.next()) {
+                Producto producto = new Producto(
+                        rs.getInt("id_producto"), rs.getInt("id_categoria"), rs.getInt("stock"), rs.getString("nombre"),
+                        rs.getString("descripcion"), rs.getDouble("precio"));
+
+                listaProductos.add(producto);
+            }
+
+        } catch (Exception e) {
+            // TODO: handle exception
+            System.out.println("No se han podido encontrar productos: " + e.getMessage());
+        }
+        return listaProductos;
+    }
+
+    
 
 
 }
