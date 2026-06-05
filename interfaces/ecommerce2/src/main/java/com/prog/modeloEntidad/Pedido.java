@@ -5,6 +5,10 @@ public class Pedido {
     private String fecha, estado;
     private double total;
 
+    public Pedido(){
+
+    }
+
     public Pedido(int id_pedido, int id_cliente, String fecha, String estado, double total) {
         this.id_pedido = id_pedido;
         this.id_cliente = id_cliente;
