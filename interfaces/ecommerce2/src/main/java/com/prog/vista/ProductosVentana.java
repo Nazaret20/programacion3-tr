@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class ProductosVentana extends JPanel {
 
     private JTextField buscarTxf, nombreTxf, descripcionTxf, precioTxf, stockTxf;
-    private JComboBox<String> cmbCategoria;
+    private JComboBox<String> cmbCategoria, cmbBuscarCategoria;
     private JButton btnBuscar, btnGuardar, btnEliminar, btnLimpiar;
     private JTable tabla;
     private DefaultTableModel modeloTabla;
@@ -42,10 +42,15 @@ public class ProductosVentana extends JPanel {
         precioTxf = new JTextField(20);
         stockTxf = new JTextField(20);
 
-
         cmbCategoria = new JComboBox<>();
         for (Categoria cateogria : listaCategorias) {
             cmbCategoria.addItem(cateogria.getNombre());
+        }
+
+        cmbBuscarCategoria = new JComboBox<>();
+        cmbBuscarCategoria.addItem("Todas");
+        for (Categoria categoria : listaCategorias) {
+            cmbBuscarCategoria.addItem(categoria.getNombre());
         }
 
         btnBuscar = new JButton("Buscar");
@@ -67,10 +72,12 @@ public class ProductosVentana extends JPanel {
     private void setupLayout() {
         setLayout(new BorderLayout(10, 10));
 
-        // Búsqueda 
+        // Búsqueda
         JPanel panelBusqueda = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelBusqueda.add(new JLabel("Buscar:"));
         panelBusqueda.add(buscarTxf);
+        panelBusqueda.add(new JLabel("Categoria:"));
+        panelBusqueda.add(cmbBuscarCategoria);
         panelBusqueda.add(btnBuscar);
 
         // Formulario
@@ -102,10 +109,18 @@ public class ProductosVentana extends JPanel {
     // Listeners----------------------------------------------
     private void setupListeners() {
         btnBuscar.addActionListener(e -> {
-            if (buscarTxf.getText().isEmpty()) {
-                cargarTabla();
+            String texto = buscarTxf.getText();
+            int indexCategoria = cmbBuscarCategoria.getSelectedIndex();
+
+            if (indexCategoria == 0) {
+                if (texto.isEmpty()) {
+                    cargarTabla();
+                } else {
+                    cargarDatosEnTabla(productoGestor.buscarPorNombre(texto));
+                }
             } else {
-                cargarDatosEnTabla(productoGestor.buscarPorNombre(buscarTxf.getText()));
+                int idCategoria = listaCategorias.get(indexCategoria - 1).getId_categoria();
+                cargarDatosEnTabla(productoGestor.buscarPorCategoria(idCategoria));
             }
         });
 

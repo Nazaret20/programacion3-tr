@@ -29,10 +29,10 @@ public class ClientesVentana extends JPanel {
     private void initializeComponents() {
         // Textfields
         buscarTxf = new JTextField(20);
-        nombreTxf = new JTextField();
-        emailTxf = new JTextField();
-        telefonoTxf = new JTextField();
-        direccionTxf = new JTextField();
+        nombreTxf = new JTextField(20);
+        emailTxf = new JTextField(20);
+        telefonoTxf = new JTextField(20);
+        direccionTxf = new JTextField(20);
 
         // Botones
         btnBuscar = new JButton("Buscar");
@@ -53,34 +53,63 @@ public class ClientesVentana extends JPanel {
 
     // Layout----------------------------------------------------
     private void setupLayout() {
-        setLayout(new BorderLayout(5, 5));
+
+        setLayout(new BorderLayout(10, 10));
+
+        // Busqueda arriba
 
         JPanel panelBusqueda = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
         panelBusqueda.add(new JLabel("Buscar:"));
+
         panelBusqueda.add(buscarTxf);
+
         panelBusqueda.add(btnBuscar);
 
-        JPanel panelFormulario = new JPanel(new GridLayout(7, 2, 5, 5));
+        // Formulario en el centro pegado a la izquierda
+
+        JPanel panelFormulario = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
+
         panelFormulario.setBorder(BorderFactory.createTitledBorder("Datos del cliente"));
+
         panelFormulario.add(new JLabel("Nombre:"));
+
         panelFormulario.add(nombreTxf);
+
         panelFormulario.add(new JLabel("Email:"));
+
         panelFormulario.add(emailTxf);
+
         panelFormulario.add(new JLabel("Telefono:"));
+
         panelFormulario.add(telefonoTxf);
+
         panelFormulario.add(new JLabel("Direccion:"));
 
         panelFormulario.add(direccionTxf);
+
         panelFormulario.add(btnGuardar);
+
         panelFormulario.add(btnEliminar);
+
         panelFormulario.add(btnLimpiar);
+
         panelFormulario.add(btnHistorial);
 
+        // Tabla abajo
+
+        JScrollPane scroll = new JScrollPane(tabla);
+
+        scroll.setPreferredSize(new Dimension(800, 200));
+
         add(panelBusqueda, BorderLayout.NORTH);
-        add(new JScrollPane(tabla), BorderLayout.CENTER);
-        add(panelFormulario, BorderLayout.EAST);
+
+        add(panelFormulario, BorderLayout.CENTER);
+
+        add(scroll, BorderLayout.SOUTH);
+
     }
-    
+
     // Listeners----------------------------------------------
     private void setupListeners() {
         btnBuscar.addActionListener(e -> {

@@ -52,7 +52,7 @@ public class ClienteGestor {
 
     //Eliminar un cliente-------------------------------------------
     public void deleteCliente(int idCliente) {
-        String sql = "DELETE FROM cliente WHERE id_cliente = ?";
+        String sql = "DELETE FROM clientes WHERE id_cliente = ?";
 
         try (Connection con = Conexion.openConnection();
                 PreparedStatement ps = con.prepareStatement(sql);) {
@@ -105,7 +105,7 @@ public class ClienteGestor {
 
             ps.setString(1, nombre);
 
-            ResultSet rs = ps.executeQuery(sql);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Cliente cliente = new Cliente(
                         rs.getInt("id_cliente"), rs.getString("nombre"), rs.getString("email"),
