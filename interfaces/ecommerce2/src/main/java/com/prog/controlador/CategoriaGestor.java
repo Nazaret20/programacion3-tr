@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class CategoriaGestor {
 
     // Mostrar todas las categorías-------------------------------
-    public ArrayList<Categoria> obtenerTodas() {
+    public ArrayList<Categoria> showCategorias() {
         ArrayList<Categoria> listaCateogiras = new ArrayList<>();
         String sql = "SELECT * FROM categorias";
 

@@ -8,8 +8,8 @@ import com.prog.modeloEntidad.Pedido;
 
 public class ClienteGestor {
 
-    // Introducir un cliente nuevo-------------------------------
-    public void insertProducto(Cliente cliente) {
+    //Introducir un cliente nuevo-------------------------------
+    public void insertCliente(Cliente cliente) {
         String sql = "INSERT INTO clientes (nombre, email, telefono, direccion) VALUES (?, ?, ?, ?)";
 
         try (Connection con = Conexion.openConnection();
@@ -29,8 +29,8 @@ public class ClienteGestor {
         }
     }
 
-    // Actualizar datos de un cliente-------------------------------
-    public void updateProdcuto(Cliente cliente) {
+    //Actualizar datos de un cliente-------------------------------
+    public void updateCliente(Cliente cliente) {
         String sql = "UPDATE clientes SET nombre = ?, telefono = ?, direccion = ? WHERE id_cliente = ?";
 
         try (Connection con = Conexion.openConnection();
@@ -50,8 +50,8 @@ public class ClienteGestor {
         }
     }
 
-    // Eliminar un cliente-------------------------------------------
-    public void deleteProducto(int idCliente) {
+    //Eliminar un cliente-------------------------------------------
+    public void deleteCliente(int idCliente) {
         String sql = "DELETE FROM cliente WHERE id_cliente = ?";
 
         try (Connection con = Conexion.openConnection();
@@ -67,7 +67,7 @@ public class ClienteGestor {
         }
     }
 
-    // Mostrar historial del cliente-------------------------------
+    //Mostrar historial del cliente-------------------------------
     public ArrayList<Pedido> showHistorialCliente(int idCliente) {
         ArrayList<Pedido> listaPedidos = new ArrayList<>();
         String sql = "SELECT p.id_pedido, p.total, p.estado, c.id_cliente FROM pedidos p JOIN clientes c ON c.id_cliente = p.id_cliente WHERE p.id_cliente = ?";
@@ -95,7 +95,7 @@ public class ClienteGestor {
         return listaPedidos;
     }
 
-    // Buscar cliente por el nombre-----------------------------
+    //Buscar cliente por el nombre-----------------------------
     public ArrayList<Cliente> buscarPorNombre(String nombre) {
         ArrayList<Cliente> listaClientes = new ArrayList<>();
         String sql = "SELECT * FROM clientes WHERE nombre = ?";
@@ -117,6 +117,31 @@ public class ClienteGestor {
         } catch (Exception e) {
             // TODO: handle exception
             System.out.println("No se ha podido encontrar al cliente: " + e.getMessage());
+        }
+        return listaClientes;
+    }
+
+     //Mostrar todos los clientes
+    public ArrayList<Cliente> showClientes() {
+        ArrayList<Cliente> listaClientes = new ArrayList<>();
+        String sql = "SELECT * FROM Clientes";
+
+        try (Connection con = Conexion.openConnection();
+             Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery(sql);) {
+
+            while (rs.next()) {
+                Cliente cliente = new Cliente(
+                    rs.getInt("ID_Cliente"),
+                    rs.getString("Nombre"),
+                    rs.getString("Email"),
+                    rs.getString("Telefono"),
+                    rs.getString("Direccion")
+                );
+                listaClientes.add(cliente);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener clientes: " + e.getMessage());
         }
         return listaClientes;
     }

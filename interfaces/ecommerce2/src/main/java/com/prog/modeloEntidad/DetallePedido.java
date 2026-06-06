@@ -13,6 +13,10 @@ public class DetallePedido {
         this.subtotal = subtotal;
     }
 
+    public DetallePedido() {
+        
+    }
+
     @Override
     public String toString() {
         return "DetallePedido [id_detalle=" + id_detalle + ", id_pedido=" + id_pedido + ", id_producto=" + id_producto

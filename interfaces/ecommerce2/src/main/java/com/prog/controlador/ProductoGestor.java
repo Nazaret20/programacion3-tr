@@ -54,13 +54,13 @@ public class ProductoGestor {
     }
 
     //Eliminar producto-------------------------------------------
-    public void deleteProducto(Producto producto) {
+    public void deleteProducto(int idProducto) {
         String sql = "DELETE FROM producto WHERE id_producto = ?";
 
         try (Connection con = Conexion.openConnection();
                 PreparedStatement ps = con.prepareStatement(sql);) {
 
-            ps.setInt(1, producto.getId_producto());
+            ps.setInt(1, idProducto);
             ps.executeUpdate();
             
         } catch (Exception e) {
@@ -95,13 +95,13 @@ public class ProductoGestor {
     }
 
     // Buscar productos por el nombre-----------------------------
-    public ArrayList<Producto> buscarPorNombre(Producto producto) {
+    public ArrayList<Producto> buscarPorNombre(String producto) {
         String sql = "SELECT * FROM productos WHERE nombre = ?";
 
         try (Connection con = Conexion.openConnection();
                 PreparedStatement ps = con.prepareStatement(sql);) {
 
-            ps.setString(1, producto.getNombre());
+            ps.setString(1, producto);
 
             ResultSet rs = ps.executeQuery(sql);
                 while (rs.next()) {

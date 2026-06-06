@@ -14,6 +14,10 @@ public class Producto {
         this.precio = precio;
     }
 
+    public Producto() {
+        
+    }
+
     @Override
     public String toString() {
         return "Producto [id_producto=" + id_producto + ", id_categoria=" + id_categoria + ", stock=" + stock

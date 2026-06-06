@@ -9,7 +9,7 @@ import com.prog.modeloEntidad.Producto;
 
 public class PedidoGestor {
 
-    // Crear un pedido nuevo en el carrito----------------------------
+    //Crear un pedido nuevo en el carrito----------------------------
     public boolean crearPedido(int idCliente, ArrayList<DetallePedido> carrito) {
         String sqlDePedido = "INSERT INTO pedidos (id_cliente, estado) VALUES (?, 'pendiente')";
         String sqlDeUltimoId = "SELECT MAX(id_pedido) FROM pedidos";
@@ -34,7 +34,7 @@ public class PedidoGestor {
             PreparedStatement psDetalle = con.prepareStatement(sqlDetallePedido);
             for (DetallePedido detalle : carrito) {
                 psDetalle.setInt(1, idPedido);
-                psDetalle.setInt(2, detalle.getId_pedido());
+                psDetalle.setInt(2, detalle.getId_producto());
                 psDetalle.setInt(3, detalle.getCantidad());
                 psDetalle.setDouble(4, detalle.getPrecio_unit());
                 psDetalle.setDouble(5, detalle.getSubtotal());
@@ -49,7 +49,7 @@ public class PedidoGestor {
         }
     }
 
-    // Cambair estado del pedido-------------------------------
+    //Cambair estado del pedido-------------------------------
     public void cambiarEstado(Pedido p) {
         String sql = "UPDATE pedidos SET estado = ? WHERE id_pedido = ?";
 
@@ -66,7 +66,7 @@ public class PedidoGestor {
         }
     }
 
-    // Mostrar los detalles de un pedido------------------------
+    //Mostrar los detalles de un pedido------------------------
     public ArrayList<DetallePedido> obtenerDetalles(int idPedido) {
         ArrayList<DetallePedido> listaDetallesDePed = new ArrayList<>();
         String sql = "SELECT * FROM detalles_pedido WHERE id_pedido = ?";
@@ -95,8 +95,8 @@ public class PedidoGestor {
         return listaDetallesDePed;
     }
 
-    // Mostrar todos los pedidos-------------------------------
-    public void showPedidos() {
+    //Mostrar todos los pedidos-------------------------------
+    public ArrayList<Pedido> showPedidos() {
         ArrayList<Pedido> listaPedidos = new ArrayList<>();
         String sql = "SELECT * FROM pedidos";
 
@@ -116,7 +116,7 @@ public class PedidoGestor {
         } catch (Exception e) {
             // TODO: handle exception
             System.out.println("No se han podido mostrar los pedidos: " + e.getMessage());
-
         }
+        return listaPedidos;
     }
 }

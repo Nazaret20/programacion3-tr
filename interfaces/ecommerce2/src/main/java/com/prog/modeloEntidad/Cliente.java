@@ -12,6 +12,10 @@ public class Cliente {
         this.direccion = direccion;
     }
 
+    public Cliente() {
+    
+    }
+
     @Override
     public String toString() {
         return "Cliente [nombre=" + nombre + ", telefono=" + telefono + ", email=" + email + ", direccion=" + direccion
