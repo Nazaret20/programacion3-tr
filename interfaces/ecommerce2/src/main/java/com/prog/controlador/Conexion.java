@@ -7,7 +7,7 @@ public class Conexion {
         Connection con = null;
         try {
             // jdbc:mariadb://servidor:puerto/nombreBaseDatos?usuario=xxx&contraseña=xxx
-            String connectionUrl = "jdbc:mariadb://localhost:3306/ecommerce?user=root&password=nazaret";
+            String connectionUrl = "jdbc:mariadb://localhost:3306/ecommerce?user=root&password=1234";
 
             // Obtenemos el objeto Connection que representa la conexión
             con = DriverManager.getConnection(connectionUrl);

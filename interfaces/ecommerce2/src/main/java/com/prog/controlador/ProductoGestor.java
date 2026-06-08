@@ -1,25 +1,25 @@
 package com.prog.controlador;
 
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.*;
 
 import com.prog.modeloEntidad.Producto;
 
 public class ProductoGestor {
     private ArrayList<Producto> listaProductos = new ArrayList<>();
 
-     // Introducir un producto nuevo-------------------------------
-    public void insertProducto(Producto p) {
-        String sql = "INSERT INTO productos (nombre, descripcion, precio, id_cateogria, stock) VALUES (?, ?, ?, ?, ?)";
+    // Introducir un producto nuevo-------------------------------
+    public void insertProducto(Producto producto) {
+        String sql = "INSERT INTO productos (nombre, descripcion, precio, id_categoria, stock) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection con = Conexion.openConnection();
                 PreparedStatement ps = con.prepareStatement(sql);) {
 
-            ps.setString(1, p.getNombre());
-            ps.setString(2, p.getDescripcion());
-            ps.setDouble(3, p.getPrecio());
-            ps.setInt(4, p.getId_categoria());
-            ps.setInt(5, p.getStock());
+            ps.setString(1, producto.getNombre());
+            ps.setString(2, producto.getDescripcion());
+            ps.setDouble(3, producto.getPrecio());
+            ps.setInt(4, producto.getId_categoria());
+            ps.setInt(5, producto.getStock());
 
             ps.executeUpdate();
 
@@ -30,22 +30,22 @@ public class ProductoGestor {
         }
     }
 
-    //Actualizar datos de un producto-------------------------------
-    public void updateProdcuto(Producto p) {
-        String sql = "UPDATE producto SET nombre = ?, descripcion = ?, precio = ?, id_categoria = ?, stock = ? WHERE id_producto = ?";
+    // Actualizar datos de un producto-------------------------------
+    public void updateProdcuto(Producto producto) {
+        String sql = "UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, id_categoria = ?, stock = ? WHERE id_producto = ?";
 
         try (Connection con = Conexion.openConnection();
                 PreparedStatement ps = con.prepareStatement(sql);) {
-            
-            ps.setString(1, p.getNombre());
-            ps.setString(2, p.getDescripcion());
-            ps.setDouble(3, p.getPrecio());
-            ps.setInt(4, p.getId_categoria());
-            ps.setInt(5, p.getStock());
-            ps.setInt(6, p.getId_producto());
+
+            ps.setString(1, producto.getNombre());
+            ps.setString(2, producto.getDescripcion());
+            ps.setDouble(3, producto.getPrecio());
+            ps.setInt(4, producto.getId_categoria());
+            ps.setInt(5, producto.getStock());
+            ps.setInt(6, producto.getId_producto());
 
             ps.executeUpdate();
-            
+
         } catch (Exception e) {
             // TODO: handle exception
             System.out.println("No se ha podido modificar el producto: " + e.getMessage());
@@ -53,16 +53,16 @@ public class ProductoGestor {
         }
     }
 
-    //Eliminar producto-------------------------------------------
-    public void deleteProducto(Producto p) {
-        String sql = "DELETE FROM producto WHERE id_producto = ?";
+    // Eliminar producto-------------------------------------------
+    public void deleteProducto(int idProducto) {
+        String sql = "DELETE FROM productos WHERE id_producto = ?";
 
         try (Connection con = Conexion.openConnection();
                 PreparedStatement ps = con.prepareStatement(sql);) {
 
-            ps.setInt(1, p.getId_producto());
+            ps.setInt(1, idProducto);
             ps.executeUpdate();
-            
+
         } catch (Exception e) {
             // TODO: handle exception
             System.out.println("No se ha podido eliminar el producto: " + e.getMessage());
@@ -95,31 +95,56 @@ public class ProductoGestor {
     }
 
     // Buscar productos por el nombre-----------------------------
-    public ArrayList<Producto> buscarPorNombre(Producto p) {
+    public ArrayList<Producto> buscarPorNombre(String producto) {
         String sql = "SELECT * FROM productos WHERE nombre = ?";
 
         try (Connection con = Conexion.openConnection();
                 PreparedStatement ps = con.prepareStatement(sql);) {
 
-            ps.setString(1, p.getNombre());
+            ps.setString(1, producto);
 
-            try (ResultSet rs = ps.executeQuery(sql)) {
-                while (rs.next()) {
-                    Producto producto = new Producto(
-                            rs.getInt("id_producto"), rs.getInt("id_categoria"), rs.getInt("stock"), rs.getString("nombre"),
-                            rs.getString("descripcion"), rs.getDouble("precio"));
-    
-                    listaProductos.add(producto);
-                }
+            ResultSet rs = ps.executeQuery(sql);
+            while (rs.next()) {
+                Producto productoBuscado = new Producto(
+                        rs.getInt("id_producto"), rs.getInt("id_categoria"), rs.getInt("stock"), rs.getString("nombre"),
+                        rs.getString("descripcion"), rs.getDouble("precio"));
+
+                listaProductos.add(productoBuscado);
             }
 
-            } catch (Exception e) {
-                // TODO: handle exception
-                System.out.println("No se han podido encontrar productos: " + e.getMessage());
-            }
-            return listaProductos;
+        } catch (Exception e) {
+            // TODO: handle exception
+            System.out.println("No se han podido encontrar productos: " + e.getMessage());
         }
+        return listaProductos;
+
     }
 
-   
+    public ArrayList<Producto> buscarPorCategoria(int idCategoria) {
+        ArrayList<Producto> listaProductos = new ArrayList<>();
+        String sql = "SELECT * FROM productos WHERE id_categoria = ?";
+
+        try (Connection con = Conexion.openConnection();
+                PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, idCategoria);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Producto producto = new Producto(
+                        rs.getInt("id_producto"),
+                        rs.getInt("id_categoria"),
+                        rs.getInt("stock"),
+                        rs.getString("nombre"),
+                        rs.getString("descripcion"),
+                        rs.getDouble("precio"));
+                listaProductos.add(producto);
+
+            }
+        } catch (SQLException e) {
+            System.out.println("No se ha podido buscar por categoría: " + e.getMessage());
+        }
+        return listaProductos;
+    }
+
 }
